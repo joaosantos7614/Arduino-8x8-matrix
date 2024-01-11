@@ -2,8 +2,7 @@ var grid = document.getElementById('LedGrid');
 var row;
 var element;
 var isConnected;
-var LedMatrix = new Uint8Array();
-LedMatrix = [
+var LedMatrix = [
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -32,8 +31,8 @@ for(let i = 0; i < 8 ;i++){
 }
 console.log("script loaded");
 
+//toggles a pixel on or off
 function toggle(row,col){
-    console.log(`Clicked row ${row}, column ${col}`);
     var ClickedElement=document.getElementById(`${row}${col}`);
     if(ClickedElement.classList.contains('toggled')){
         ClickedElement.classList.remove('toggled');
@@ -42,14 +41,14 @@ function toggle(row,col){
         ClickedElement.classList.add('toggled');
         LedMatrix[row][col]=1;
     }
+    //if it's connected, will send command to arduino
     if(isConnected){
-        //console.log(LedMatrix);
         writer.write(new TextEncoder().encode(`${row}${col}`));
-        //console.log(`${row},${col}`);
-
+        console.log(`Draw pixels ${row},${col} command sent to serial`);
     }
 }
 
+// clears all the active pixels
 function clearAll(){
     for(let i=0;i<8;i++){
         for(let j=0;j<8;j++){
@@ -60,7 +59,7 @@ function clearAll(){
             }
         }
     }
-
+    //if it's connected, will send command to arduino
     if(isConnected){
         writer.write(new TextEncoder().encode('cl'));
         console.log('Clear Pixels (cl) command sent to serial');
@@ -78,6 +77,8 @@ async function connect() {
         isConnected = true;
         document.getElementById('status').innerHTML = 'Connected';
         document.getElementById('connect').disabled = true;
+        console.log('Connected');
+        clearAll(); //clears the matrix to ensure coerence between arduino and website 
         
     } catch (error) {
         console.error('Error:', error);
