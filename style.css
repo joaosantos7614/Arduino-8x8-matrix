@@ -1,0 +1,22 @@
+body{
+    text-align: center;
+}
+
+button{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.LedElement{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #000;
+}
+
+.LedRow{
+    height: 20px;
+}
+
+.toggled{
+    background-color: red;
+}
